@@ -22,7 +22,7 @@ async def start():
         warning_file = "doNotCloseSummonWindow.mp3"
 
         # Replace the following line with the new XPath
-        XPaths = get_XPaths()
+        XPaths = get_XPath()
 
 
 
@@ -51,7 +51,7 @@ async def start():
         try: 
             while True:
                 try:
-                    _t = len(browser.find_by_xpath(XPaths['Request']).first.find_by_xpath('*'))
+                    _t = len(browser.find_by_xpath(XPaths['request']).first.find_by_xpath('*'))
                 except NoSuchWindowException as err:
                     log(f'Window was closed\n{err}')
                     asyncio.get_event_loop().create_task(play(warning))
@@ -104,7 +104,7 @@ def log(e, location="//192.168.1.3/level1/IT/summonAlerter"):
 def get_XPath():
     result = {}
     with open("./Xpaths.cfg") as file:
-        lines = file.readLines()
+        lines = file.readlines()
         for line in lines:
             l = line.split('=')
             result[l[0]]=l[1].replace('\n', '')
