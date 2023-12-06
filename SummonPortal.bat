@@ -1,2 +1,2 @@
 @echo off
-start "c:\Summon Alerter\venv\Scripts\python.exe" "C:\Summon Alerter\main.py"
+start "python.exe" "C:\Users\Blaine\Desktop\Code Projects\summonApp\main.py"

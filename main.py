@@ -13,12 +13,19 @@ async def start():
     # Does not start if using headless mode
     #chrome_options.add_argument('--headless')
     #chrome_options.add_argument('--disable-gpu')
+
     with Browser('chrome', options=chrome_options) as browser:
         url = "https://summon.tech"
         username = "1889office@gmail.com"
         password = "front-gGh-1889"
         sound_file = "synthesize.mp3"
         warning_file = "doNotCloseSummonWindow.mp3"
+
+        # Replace the following line with the new XPath
+        XPaths = get_XPaths()
+
+
+
         browser.visit(url)
         WebDriverWait(browser.driver, 10).until(EC.presence_of_all_elements_located((By.TAG_NAME, "body")))
 
@@ -31,7 +38,7 @@ async def start():
         email_input.fill(username)
         password_input.fill(password)
 
-        submit_button = browser.driver.find_element(By.XPATH,"/html/body/app-root/ion-app/ion-router-outlet/app-user-login/ion-footer/ion-toolbar/ion-button")
+        submit_button = browser.driver.find_element(By.XPATH,XPaths['submit'])
 
         if submit_button:
             submit_button.click()
@@ -44,7 +51,7 @@ async def start():
         try: 
             while True:
                 try:
-                    _t = len(browser.find_by_xpath("/html/body/app-root/ion-app/ion-router-outlet/app-location/ion-tab-bar/ion-tab-button[3]").first.find_by_xpath('*'))
+                    _t = len(browser.find_by_xpath(XPaths['Request']).first.find_by_xpath('*'))
                 except NoSuchWindowException as err:
                     log(f'Window was closed\n{err}')
                     asyncio.get_event_loop().create_task(play(warning))
@@ -93,7 +100,16 @@ def log(e, location="//192.168.1.3/level1/IT/summonAlerter"):
         if location != ".":
             log("unable to connect to synology", location=".")
             log(e,location=".")
-    
+
+def get_XPath():
+    result = {}
+    with open("./Xpaths.cfg") as file:
+        lines = file.readLines()
+        for line in lines:
+            l = line.split('=')
+            result[l[0]]=l[1].replace('\n', '')
+    return result
+
 async def warn_again():
     await asyncio.sleep(60)
     return True
